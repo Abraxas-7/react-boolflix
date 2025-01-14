@@ -1,13 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useGlobalContext } from "../context/GlobalContext";
 
 import axios from "axios";
 
-const apiUrl = import.meta.env.VITE_API_URL;
-const myKey = import.meta.env.VITE_API_KEY;
+import "./SearchBar.module.css";
 
 export default function SearchBar() {
-  const { setSearch, setMovies, setSeries, toggleLoader } = useGlobalContext();
+  const {
+    setSearch,
+    setMovies,
+    setSeries,
+    toggleLoader,
+    apiUrl,
+    myKey,
+    selectedGenre,
+  } = useGlobalContext();
   const [query, setQuery] = useState("");
 
   const handleInputChange = (e) => {
@@ -24,8 +31,15 @@ export default function SearchBar() {
     toggleLoader(true);
     setSearch(query);
 
+    let genreFilter = "";
+    if (selectedGenre) {
+      genreFilter = `&with_genres=${selectedGenre.id}`;
+    }
+
     axios
-      .get(`${apiUrl}/search/movie?api_key=${myKey}&query=${query}`)
+      .get(
+        `${apiUrl}/search/movie?api_key=${myKey}&query=${query}${genreFilter}`
+      )
       .then((res) => {
         setMovies(res.data.results);
         console.log(res.data.results);
@@ -35,9 +49,9 @@ export default function SearchBar() {
       });
 
     axios
-      .get(`${apiUrl}/search/tv?api_key=${myKey}&query=${query}`)
+      .get(`${apiUrl}/search/tv?api_key=${myKey}&query=${query}${genreFilter}`)
       .then((res) => {
-        setMovies(res.data.results);
+        setSeries(res.data.results);
         console.log(res.data.results);
       })
       .catch((err) => {
