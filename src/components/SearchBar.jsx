@@ -14,6 +14,7 @@ export default function SearchBar() {
     apiUrl,
     myKey,
     selectedGenre,
+    setSelectedGenre,
   } = useGlobalContext();
   const [query, setQuery] = useState("");
 
@@ -28,31 +29,41 @@ export default function SearchBar() {
   };
 
   const performSearch = (query) => {
+    if (selectedGenre) {
+      setSelectedGenre(null);
+    }
+
     toggleLoader(true);
     setSearch(query);
 
-    let genreFilter = "";
-    if (selectedGenre) {
-      genreFilter = `&with_genres=${selectedGenre.id}`;
-    }
-
     axios
-      .get(
-        `${apiUrl}/search/movie?api_key=${myKey}&query=${query}${genreFilter}`
-      )
+      .get(`${apiUrl}/search/movie?api_key=${myKey}&query=${query}`)
       .then((res) => {
-        setMovies(res.data.results);
-        console.log(res.data.results);
+        const updatedMovies = res.data.results.map((movie) => {
+          movie.poster_url = movie.poster_path
+            ? `https://image.tmdb.org/t/p/w342${movie.poster_path}`
+            : "https://placehold.co/300x400/000000/FFFFFF.png?text=Immagine+non+disponibile";
+          return movie;
+        });
+        setMovies(updatedMovies);
+        console.log(updatedMovies);
       })
       .catch((err) => {
         console.error("Errore durante la chiamata:", err);
       });
 
     axios
-      .get(`${apiUrl}/search/tv?api_key=${myKey}&query=${query}${genreFilter}`)
+      .get(`${apiUrl}/search/tv?api_key=${myKey}&query=${query}`)
       .then((res) => {
-        setSeries(res.data.results);
-        console.log(res.data.results);
+        const updatedSeries = res.data.results.map((serie) => {
+          serie.poster_url = serie.poster_path
+            ? `https://image.tmdb.org/t/p/w342${serie.poster_path}`
+            : "https://placehold.co/300x400/000000/FFFFFF.png?text=Immagine+non+disponibile";
+          return serie;
+        });
+
+        setSeries(updatedSeries);
+        console.log(updatedSeries);
       })
       .catch((err) => {
         console.error("Errore durante la chiamata:", err);
