@@ -12,7 +12,7 @@ export default function MainComponent() {
     if (search.trim() !== "" || selectedGenre) {
       setHasSearched(true);
     }
-  }, [search]);
+  }, [search, selectedGenre]);
 
   if (!hasSearched) {
     return (

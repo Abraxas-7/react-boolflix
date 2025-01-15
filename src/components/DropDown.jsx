@@ -43,6 +43,7 @@ export default function DropDown() {
           return movie;
         });
         setMovies(updatedMovies);
+        console.log(updatedMovies);
       })
       .catch((err) => {
         console.error("Errore durante la chiamata:", err);
@@ -60,6 +61,7 @@ export default function DropDown() {
           return serie;
         });
         setSeries(updatedSeries);
+        console.log(updatedSeries);
       })
       .catch((err) => {
         console.error("Errore durante la chiamata:", err);
