@@ -5,7 +5,7 @@ import CardList from "./CardList";
 import style from "./MainComponent.module.css";
 
 export default function MainComponent() {
-  const { movies, series, search } = useGlobalContext();
+  const { movies, series, search, selectedGenre } = useGlobalContext();
   const [hasSearched, setHasSearched] = useState(false);
 
   useEffect(() => {
