@@ -26,7 +26,7 @@ export default function MainComponent() {
 
   return (
     <div className="container-fluid p-5">
-      {hasSearched && movies.length === 0 && series.length === 0 && (
+      {movies.length === 0 && series.length === 0 && (
         <div
           className={`${style.myContainer} d-flex align-items-center justify-content-center fs-1`}
         >
