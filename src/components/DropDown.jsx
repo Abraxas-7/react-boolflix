@@ -18,7 +18,6 @@ export default function DropDown() {
   const handleSelect = (genre, event) => {
     event.preventDefault();
     if (!genre) {
-      // Se selezionato "Seleziona un genere", resetta tutto
       setSelectedGenre(null);
       setMovies([]);
       setSeries([]);
@@ -28,11 +27,10 @@ export default function DropDown() {
   };
 
   useEffect(() => {
-    if (!selectedGenre) return; // Se non è selezionato alcun genere, non fare nulla.
+    if (!selectedGenre) return;
 
     toggleLoader(true);
 
-    // Chiamata per i film
     axios
       .get(
         `${apiUrl}/discover/movie?api_key=${myKey}&with_genres=${selectedGenre.id}`
@@ -50,7 +48,6 @@ export default function DropDown() {
         console.error("Errore durante la chiamata:", err);
       });
 
-    // Chiamata per le serie
     axios
       .get(
         `${apiUrl}/discover/tv?api_key=${myKey}&with_genres=${selectedGenre.id}`
@@ -88,12 +85,11 @@ export default function DropDown() {
         className={`${"dropdown-menu"} ${styles.myDropdownMenu}`}
         aria-labelledby="dropdownMenuButton"
       >
-        {/* Aggiungi l'elemento base vuoto */}
         <li>
           <a
             className="dropdown-item"
             href="#"
-            onClick={(event) => handleSelect(null, event)} // Reset tutto quando cliccato
+            onClick={(event) => handleSelect(null, event)}
           >
             Seleziona un genere
           </a>
